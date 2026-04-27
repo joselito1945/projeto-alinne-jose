@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ToDo</title>
+</head>
+<body>
+
+<h1>ALINNE MARTINS - RA 256600</h1>
+
+<input id="tarefa" placeholder="Digite uma tarefa">
+<button onclick="add()">Adicionar</button>
+
+<ul id="lista"></ul>
+
+<script>
+const API = "https://backend-todoo-be8l.onrender.com";
+
+async function carregar(){
+ const resposta = await fetch(API + "/api/getAll");
+ const data = await resposta.json();
+
+ const lista = document.getElementById("lista");
+ lista.innerHTML = "";
+
+ data.forEach(t=>{
+   lista.innerHTML += <li>${t.descricao}</li>;
+ });
+}
+
+async function add(){
+ const valor = document.getElementById("tarefa").value;
+
+ await fetch(API + "/api/create",{
+   method:"POST",
+   headers:{
+      "Content-Type":"application/json"
+   },
+   body: JSON.stringify({
+      descricao: valor
+   })
+ });
+
+ document.getElementById("tarefa").value="";
+ carregar();
+}
+
+carregar();
+</script>
+
+</body>
+</html
